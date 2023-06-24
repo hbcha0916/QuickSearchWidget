@@ -7,6 +7,23 @@
 > QuickSearch를 위젯으로 추가해요
 > 
 
+# 기능
+
+- QuickSearch3.0을 위젯으로 축소한 버전이에요.
+- QuickSearch3.0의 핵심기능을 위젯으로도 사용할 수 있어요
+    1. 빠른 붙여놓기
+        
+        ### 사용 방법
+        
+        QuickSearchWidget의 영역에 마우스를 올리고 붙여넣으면 바로 검색이 가능해요.
+        
+    2. 빠른 검색
+        
+        ### 사용 방법
+        
+        검색창에 검색어를 입력해요.
+        
+
 # 주의
 
 QuickSearchWidget은 Tistory스킨 hELLO 을 기준으로 개발되었습니다.
