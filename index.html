@@ -1,18 +1,45 @@
-<!DOCTYPE html >
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="./resource/ICON.ico" />
     <title>Document</title>
     <style>
+        body{
+            position:sticky;
+        }
+        html.dark {
+            /* background-image: url("./resource/BGIB.png"); */
+            color: #bbb;
+            --color:#bbb;
+            --btn_settings_background-image: url("./resource/UIicons/darkmode_on.png");
+            --btn_settings_area_invert: invert(60%);
+            --btn_settings_area_invert_hover: invert(40%);
+            --obj_background_color: rgba(0, 0, 0, 0.418);
+            --obj_background_shadow: 2px 7px 15px 8px rgba(0, 0, 0, 0.3);
+            --obj_blur : blur(10px);
+            --mainmenu_th_hover: rgba(0, 0, 0, 0.521);
+        }
+        html{
+            /* background-image: url("./resource/BGIW.png"); */
+            color: #343434;
+            --color: #343434;
+            --btn_settings_background-image: url("./resource/UIicons/darkmode.png");
+            --btn_settings_area_invert: invert(10%);
+            --btn_settings_area_invert_hover: invert(100%);
+            --obj_background_color: rgba(201, 201, 201, 0.226);
+            --obj_background_shadow: 2px 7px 15px 8px rgba(95, 95, 95, 0.3);
+            --obj_blur : blur(10px);
+            --mainmenu_th_hover: rgba(201, 201, 201, 0.37);
+        }
         .searchBar{
-            padding: 2% 0 0 0;
             margin: 0 auto;
             width:70%;
             background-color: var(--obj_background_color);
             backdrop-filter: var(--obj_blur);
-            box-shadow: var(--obj_background_shadow);
+            /* box-shadow: var(--obj_background_shadow); */
             border-radius: 20px;
             border: none;
             text-align : center;
@@ -26,27 +53,99 @@
         }
         input[id=Search_Bar_Entity] {
             width: 90%;
+            background-color: rgba(0,0,0,0);
+            border-radius: 20px;
+            border: none;
+            color: var(--color);
+            outline: none;
+        }
+        .nullArea{
+            padding: 1% 0 1% 0;
+        }
+        .autoComArea{
+            padding: 0 0 0 0;
+            margin: 0 auto;
+            width:95%;
+            background-color: var(--obj_background_color);
+            backdrop-filter: var(--obj_blur);
+            /* box-shadow: var(--obj_background_shadow); */
+            border-radius: 20px;
+            border: none;
+            text-align : center;
+        }
+        .Clock{
+            padding: 0 10px 0 10px;
+            user-select: none;
+            display: table;
+            margin: 0 auto;
+            text-align: center;
+            background-color: var(--obj_background_color);
+            backdrop-filter: var(--obj_blur);
+            /* box-shadow: var(--obj_background_shadow); */
+            border-radius: 20px;
+            border: none;
+        }
+        .TIME{
+            font-size: 160%;
+        }
+        a:link { color: var(--color); text-decoration: none;}
+        a:visited { color: var(--color); text-decoration: none;}
+        a:hover { color: blue; text-decoration: underline;}
+        .mark{
+            bottom: 8px;
+            text-align : center;
         }
     </style>
 </head>
-<body style="text-align: center; background-color: rgba(255, 255, 255, 0); WIDTH: 230px; HEIGHT: 180px; border: 1px solid black;">
+<body style="text-align: center; background-color: rgba(255, 255, 255, 0); WIDTH: 230px; " onKeypress="if(window.event.keyCode==13 && $('#Search_Bar_Entity').val()!=''){press_enter()}">
     <!-- <iframe src="https://hbchaquicksearch.netlify.app/" style="WIDTH: 230px; HEIGHT: 180px">
     </iframe> -->
+    <div class="nullArea">
+        
+    </div>
     <div class="autoComArea">
         <table class="autoCom">
 
         </table>
     </div>
+    <div class="nullArea">
+        
+    </div>
     <div class="searchBar">
         <input type="text" id="Search_Bar_Entity" placeholder="검색어 입력" autofocus onKeypress="if(window.event.keyCode==13 && $('#Search_Bar_Entity').val()!=''){press_enter()}">
         <table class="searchEngine">
-            <th class="MainMenu_table_th" id="google" onclick="searchEngine('g')">Google</th>
-            <th class="MainMenu_table_th" id="naver" onclick="searchEngine('n')">Naver</th>
-            <th class="MainMenu_table_th" id="youtube" onclick="searchEngine('y')">Youtube</th>
+            <th class="MainMenu_table_th" id="google" onclick="searchEngine('g'); setColor('g');">Google</th>
+            <th class="MainMenu_table_th" id="naver" onclick="searchEngine('n'); setColor('n');">Naver</th>
+            <th class="MainMenu_table_th" id="youtube" onclick="searchEngine('y'); setColor('y');">Youtube</th>
         </table>
+    </div>
+
+    <div class="nullArea">
+        
+    </div>
+
+    <div class="Clock">   
+        <div id="Clock" class="TIME">00:00</div>
+        <div id="Clockday" class="DAY" style="font-size: 70%;">00/00/00</div>
+        <div style="font-size: 5%;"><a href="https://hbcha0916.tistory.com/" target="_blank" style="text-decoration: none;">By.hbcha</a></div>
+    </div>
+
+    <div class="mark">
+        <a href="https://github.com/hbcha0916/QuickSearchWidget" target="_blank" style="text-decoration: none; font-size: 5%;">🔍QuickSearchWidget🔎</a>
     </div>
 </body>
 <script>
+    let serach_engine = 'g';
+    setColor(serach_engine);
+    const storedTheme = localStorage.getItem("darkTheme");
+
+    // if (storedTheme !== null) {
+    //     if (storedTheme === "true") {
+    //         document.documentElement.classList.add("dark");
+    //     }
+    // } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    //     document.documentElement.classList.add("dark");
+    // }
     $(document).ready(function(){
         $('.autoComArea').hide();
         document.cookie = "safeCookie1=foo; SameSite=Lax"; 
@@ -54,15 +153,18 @@
         document.cookie = "crossCookie=bar; SameSite=None; Secure";
     });
 
+    function press_enter(){
+        go_search($('#Search_Bar_Entity').val(),serach_engine);
+    }
     
     $('#Search_Bar_Entity').keyup(function(){
         $.ajax({
-            url: "https://suggestqueries.google.com/complete/search?output=chrome&hl=ko&q="+$('#input_text').val(), // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+            url: "https://suggestqueries.google.com/complete/search?output=chrome&hl=ko&q="+$('#Search_Bar_Entity').val(), // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
             dataType: "jsonp",
             method: "GET"   
         })
         .done(function(json) {
-            var lengJson = 3;
+            var lengJson = 2;
             if (lengJson>json[1].length){
                 lengJson = json[1].length;
             }
@@ -75,11 +177,145 @@
             }
             if (json[1].length==0){
                 $('.autoComArea').hide();
+                $('.Clock').show();
             }else{
                 $('.autoComArea').show();
+                $('.Clock').hide();
             }
             
         })
     });
+
+    function searchEngine(engine){
+        switch(engine){
+            case "g":
+                serach_engine="g";
+                break;
+            case "n":
+                serach_engine="n";
+                break;
+            case "y":
+                serach_engine="y";
+                break;
+        }
+    }
+
+    function setColor(eng){
+        var engine_list = ['#google','#naver','#youtube'];
+        for (var i in engine_list){
+            $(engine_list[i]).removeAttr('style');
+        }
+        switch(eng){
+            case "g":
+                $('#google').css({
+                    'color': 'purple'
+                });
+                break;
+            case "n":
+                $('#naver').css({
+                    'color': 'green'
+                });
+                break;
+            case "y":
+                $('#youtube').css({
+                    'color': 'red'
+                });
+                break;
+
+        }
+    }
+
+    window.addEventListener('paste', ({ clipboardData: { items } }) => {
+        for (const item of items) {
+            if (item.type.includes('image')) {
+                // const blob = item.getAsFile();
+            }
+
+            if (item.type === 'text/plain') {
+                item.getAsString((text) => {
+                    go_search(text,serach_engine);
+                });
+            }
+        }
+    });
+
+    function go_search(text,engine){
+            run_search(text,engine);
+
+            function run_search(text,engine){
+                switch(engine){
+                    case "g":
+
+                        window.open("https://www.google.com/search?q="+text,'_blank');
+
+                        break;
+                    case "n":
+
+                        window.open("https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query="+text,'_blank');
+
+                        break;
+                    case "s":
+
+                        window.open("https://stackoverflow.com/search?q="+text,'_blank');
+
+                        break;
+                    case "y":
+
+                        window.open("https://www.youtube.com/results?search_query="+text,'_blank');
+
+                        break;
+
+                }
+            }
+        }
+        function clock_fun_write(){
+        clock_fun(5);
+    }
+    function clock_fun(returnNUMBER){
+        var date = new Date();
+        var YYYY = String(date.getFullYear());
+        var MM = String(date.getMonth() + 1);
+        var DD = Zero(date.getDate());
+        var hh = Zero(date.getHours());
+        var mm = Zero(date.getMinutes());
+        var ss = Zero(date.getSeconds());
+        var Week = Weekday();
+
+
+    //시계에 1의자리수가 나올때 0을 넣어주는 함수 (ex : 1초 -> 01초)
+
+        function Zero(num) {
+            return (num < 10 ? '0' + num : '' + num); //10보다작을경우 앞에 0을 붙여준다.
+        }
+        function Weekday() {
+            var Week = ['일', '월', '화', '수', '목', '금', '토'];
+            var Weekday = date.getDay();
+            return Week[Weekday];
+        }
+        switch(returnNUMBER){
+            case 1:
+                return MM+"/"+DD+ " "+ "("+ Week + ") "+ hh +":"+ mm +"";
+
+            case 2:
+                return MM+"/"+DD+ "/"+ Week + "/"+ hh +":"+ mm +"."+ss;
+
+            case 3:
+                return YYYY+"_"+MM+"_"+DD+"_"+hh+"_"+mm+"_"+ss;
+
+            case 4:
+                return MM+"/"+DD+ "\n"+ hh +":"+ mm +"";
+            
+            case 5:
+                Write(YYYY, MM, DD, hh, mm, ss, Week);
+                break;
+                
+        }
+        function Write(YYYY, MM, DD, hh, mm, ss, Week){
+            $("#Clockday").text(YYYY + ' 년 ' + MM + ' 월 ' + DD + ' 일 ' +'\n'+' (' + Week + ')');
+            $("#Clock").text(hh + ':' + mm + ':' + ss);
+
+        }
+    }
+    setInterval(clock_fun_write, 1000);
 </script>
 </html>
