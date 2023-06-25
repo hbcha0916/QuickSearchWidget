@@ -112,7 +112,7 @@
         
     </div>
     <div class="searchBar">
-        <input type="text" id="Search_Bar_Entity" placeholder="검색어 입력" autofocus onKeypress="if(window.event.keyCode==13 && $('#Search_Bar_Entity').val()!=''){press_enter()}">
+        <input type="text" id="Search_Bar_Entity" placeholder="검색어 입력" onKeypress="if(window.event.keyCode==13 && $('#Search_Bar_Entity').val()!=''){press_enter()}">
         <table class="searchEngine">
             <th class="MainMenu_table_th" id="google" onclick="searchEngine('g'); setColor('g');">Google</th>
             <th class="MainMenu_table_th" id="naver" onclick="searchEngine('n'); setColor('n');">Naver</th>
